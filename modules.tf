@@ -1,89 +1,89 @@
 locals {
-  azs = ["us-east-1a", "us-east-1b", "us-east-1c"]
+  azs          = ["us-east-1a", "us-east-1b", "us-east-1c"]
   project_name = var.project_name
- 
-  public_subnets  = [for i in range(length(local.azs)) : cidrsubnet(var.cidr_block, 8, i)]
+
+  public_subnets = [for i in range(length(local.azs)) : cidrsubnet(var.cidr_block, 8, i)]
 }
 
 module "vpc" {
-  source  = "./modules/network"
+  source = "./modules/network"
 
   aws_region   = var.aws_region
   project_name = var.project_name
   cidr_block   = var.cidr_block
   tags         = var.network_tags
   cluster_name = var.network_cluster_name
-  
+
   # Variáveis de otimização de custos
-  availability_zones        = var.availability_zones
-  enable_nat_gateway      = var.enable_nat_gateway
-  single_nat_gateway      = var.single_nat_gateway
-  one_nat_gateway_per_az  = var.one_nat_gateway_per_az
+  availability_zones     = var.availability_zones
+  enable_nat_gateway     = var.enable_nat_gateway
+  single_nat_gateway     = var.single_nat_gateway
+  one_nat_gateway_per_az = var.one_nat_gateway_per_az
   enable_flow_log        = var.enable_flow_log
   enable_dns_hostnames   = var.enable_dns_hostnames
   enable_dns_support     = var.enable_dns_support
   assign_ipv6_address    = var.assign_ipv6_address
-  enable_ipv6           = var.enable_ipv6
+  enable_ipv6            = var.enable_ipv6
 }
 
 module "rds" {
-  source = "./modules/databases"
+  source       = "./modules/databases"
   project_name = var.project_name
   aws_region   = var.aws_region
   tags         = var.tags
-  
+
   # Variáveis RDS
-  rds_identifier                           = var.rds_identifier
-  rds_engine                               = var.rds_engine
-  rds_engine_version                       = var.rds_engine_version
-  rds_instance_class                       = var.rds_instance_class
-  rds_allocated_storage                    = var.rds_allocated_storage
-  rds_db_name                              = var.project_name
-  rds_username                             = var.rds_username
-  rds_password                             = var.rds_password
-  rds_port                                 = var.rds_port
-  
+  rds_identifier        = var.rds_identifier
+  rds_engine            = var.rds_engine
+  rds_engine_version    = var.rds_engine_version
+  rds_instance_class    = var.rds_instance_class
+  rds_allocated_storage = var.rds_allocated_storage
+  rds_db_name           = var.project_name
+  rds_username          = var.rds_username
+  rds_password          = var.rds_password
+  rds_port              = var.rds_port
+
   # Configurações de segurança
-  rds_iam_database_authentication_enabled   = var.rds_iam_database_authentication_enabled
-  rds_vpc_security_group_ids               = []  # Será preenchido após criação da VPC
-  
+  rds_iam_database_authentication_enabled = var.rds_iam_database_authentication_enabled
+  rds_vpc_security_group_ids              = [] # Será preenchido após criação da VPC
+
   # Janelas de manutenção
-  rds_maintenance_window                   = var.rds_maintenance_window
-  rds_backup_window                        = var.rds_backup_window
-  
+  rds_maintenance_window = var.rds_maintenance_window
+  rds_backup_window      = var.rds_backup_window
+
   # Monitoring
-  rds_monitoring_interval                  = var.rds_monitoring_interval
-  rds_monitoring_role_name                 = var.rds_monitoring_role_name
-  rds_create_monitoring_role               = var.rds_create_monitoring_role
-  
+  rds_monitoring_interval    = var.rds_monitoring_interval
+  rds_monitoring_role_name   = var.rds_monitoring_role_name
+  rds_create_monitoring_role = var.rds_create_monitoring_role
+
   # Configurações de subnet
-  rds_create_db_subnet_group               = var.rds_create_db_subnet_group
-  rds_subnet_ids                          = []  # Será preenchido após criação da VPC
-  
+  rds_create_db_subnet_group = var.rds_create_db_subnet_group
+  rds_subnet_ids             = [] # Será preenchido após criação da VPC
+
   # Configurações de engine
-  rds_family                               = var.rds_family
-  rds_major_engine_version                 = var.rds_major_engine_version
-  
+  rds_family               = var.rds_family
+  rds_major_engine_version = var.rds_major_engine_version
+
   # Proteção
-  rds_deletion_protection                  = var.rds_deletion_protection
-  
+  rds_deletion_protection = var.rds_deletion_protection
+
   # Parâmetros e options
-  rds_parameters                           = var.rds_parameters
-  rds_options                              = var.rds_options
+  rds_parameters = var.rds_parameters
+  rds_options    = var.rds_options
 }
 
 module "eks" {
   source = "./modules/eks-cluster"
-  
+
   # Variáveis principais
   aws_region   = var.aws_region
   project_name = var.project_name
   cidr_block   = var.cidr_block
   tags         = var.eks_tags
-  
+
   # Variáveis EKS
-  eks_cluster_name              = var.eks_cluster_name
-  eks_kubernetes_version        = var.eks_kubernetes_version
-  eks_managed_node_groups       = var.eks_managed_node_groups
-  eks_access_entries           = var.eks_access_entries
+  eks_cluster_name        = var.eks_cluster_name
+  eks_kubernetes_version  = var.eks_kubernetes_version
+  eks_managed_node_groups = var.eks_managed_node_groups
+  eks_access_entries      = var.eks_access_entries
 }

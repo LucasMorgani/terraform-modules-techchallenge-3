@@ -23,10 +23,10 @@ variable "global_tags" {
   type        = map(any)
   description = "A map of tags to add to all resources."
   default = {
-    team       = "DevOps"
-    project    = "ToggleMaster"
+    team        = "DevOps"
+    project     = "ToggleMaster"
     environment = "Prod"
-    managedBy  = "Terraform"
+    managedBy   = "Terraform"
   }
 }
 
@@ -34,10 +34,10 @@ variable "tags" {
   type        = map(any)
   description = "Tags for resources"
   default = {
-    team       = "DevOps"
-    project    = "ToggleMaster"
+    team        = "DevOps"
+    project     = "ToggleMaster"
     environment = "Prod"
-    managedBy  = "Terraform"
+    managedBy   = "Terraform"
   }
 }
 
@@ -297,9 +297,9 @@ variable "rds_options" {
 variable "dynamodb_tables" {
   description = "List of DynamoDB tables"
   type = list(object({
-    name           = string
-    hash_key       = string
-    billing_mode   = string
+    name         = string
+    hash_key     = string
+    billing_mode = string
     attributes = list(object({
       name = string
       type = string
