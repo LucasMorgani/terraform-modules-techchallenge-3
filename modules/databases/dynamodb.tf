@@ -1,16 +1,10 @@
 module "dynamodb_table" {
   #External module - community module for DynamoDB
   source   = "terraform-aws-modules/dynamodb-table/aws"
-  version  = "5.5.0"
+  version  = "4.1.0"
 
-  #Table name
-  name     = "${var.project_name}_analytics"
-
-  #Billing mode - pay-per-request
-  billing_mode = "PAY_PER_REQUEST"
-
-  #Primary key
-  hash_key = "event_id"
+  name     = "ToggleMasterAnalytics"
+  hash_key = "id"
 
   attributes = [
     {

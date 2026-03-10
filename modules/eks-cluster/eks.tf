@@ -5,6 +5,9 @@ locals {
   private_subnets = [for i, az in local.azs : cidrsubnet(var.cidr_block, 4, i + 10)]
 }
 
+# EKS module is disabled for AWS Academy environments due to IAM restrictions
+# Uncomment the following block when using in a production AWS account with proper IAM permissions
+/*
 module "eks" {
     source  = "terraform-aws-modules/eks/aws" 
     version = "~> 20.17" 
@@ -12,14 +15,14 @@ module "eks" {
     cluster_name    = var.eks_cluster_name
     cluster_version = var.eks_kubernetes_version
 
-    vpc_id     = module.vpc.vpc_id 
-    subnet_ids = module.vpc.private_subnets 
+    vpc_id     = var.vpc_id 
+    subnet_ids = var.private_subnet_ids 
     
 
     cluster_endpoint_public_access  = var.eks_cluster_endpoint_public_access 
     cluster_endpoint_private_access = var.eks_cluster_endpoint_private_access 
   
-    enable_irsa = var.eks_enable_irsa 
+    enable_irsa = var.eks_enable_irsa
 
     enable_cluster_creator_admin_permissions = var.eks_enable_cluster_creator_admin_permissions 
 
@@ -30,7 +33,7 @@ module "eks" {
         from_port   = 443
         to_port     = 443
         type        = "ingress"
-        cidr_blocks = [module.vpc.vpc_cidr_block]
+        cidr_blocks = [var.vpc_cidr_block]
       }
     }
 
@@ -76,4 +79,4 @@ module "eks" {
     eks_managed_node_groups = var.eks_managed_node_groups
     tags = var.eks_tags 
 }
-
+*/
