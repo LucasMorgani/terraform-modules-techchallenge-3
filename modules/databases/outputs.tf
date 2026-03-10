@@ -5,5 +5,5 @@ output "rds_instance_endpoint" {
 
 output "rds_instance_id" {
   description = "RDS instance ID"
-  value = module.db.db_instance_id
+  value = module.db.db_instance_resource_id
 }

@@ -58,6 +58,22 @@ variable "eks_access_entries" {
   default     = {}
 }
 
+# VPC-related variables for EKS
+variable "vpc_id" {
+  description = "VPC ID for EKS"
+  type        = string
+}
+
+variable "private_subnet_ids" {
+  description = "Private subnet IDs for EKS"
+  type        = list(string)
+}
+
+variable "vpc_cidr_block" {
+  description = "VPC CIDR block for EKS security group"
+  type        = string
+}
+
 variable "eks_availability_zones" {
   description = "List of availability zones for EKS cluster"
   type        = list(string)
@@ -86,4 +102,10 @@ variable "eks_enable_cluster_creator_admin_permissions" {
   description = "Enable cluster creator admin permissions"
   type        = bool
   default     = true
+}
+
+variable "enable_iam_session_context" {
+  description = "Enable IAM session context check (disable for AWS Academy environments)"
+  type        = bool
+  default     = false
 }

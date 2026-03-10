@@ -159,3 +159,79 @@ variable "rds_options" {
   }))
   default = []
 }
+
+# Variáveis do ElastiCache
+variable "elasticache_cluster_id" {
+  description = "ElastiCache cluster identifier"
+  type        = string
+}
+
+variable "elasticache_engine" {
+  description = "ElastiCache engine"
+  type        = string
+  default     = "redis"
+}
+
+variable "elasticache_engine_version" {
+  description = "ElastiCache engine version"
+  type        = string
+  default     = "7.0"
+}
+
+variable "elasticache_node_type" {
+  description = "ElastiCache node type"
+  type        = string
+  default     = "cache.t3.micro"
+}
+
+variable "elasticache_num_cache_nodes" {
+  description = "Number of cache nodes"
+  type        = number
+  default     = 1
+}
+
+variable "elasticache_az_mode" {
+  description = "Availability zone mode"
+  type        = string
+  default     = "single-az"
+}
+
+variable "elasticache_parameter_group_family" {
+  description = "Parameter group family"
+  type        = string
+  default     = "redis7.x"
+}
+
+variable "create_elasticache" {
+  description = "Create ElastiCache cluster"
+  type        = bool
+  default     = false
+}
+
+variable "create_elasticache_replication_group" {
+  description = "Create ElastiCache replication group"
+  type        = bool
+  default     = false
+}
+
+# VPC-related variables for ElastiCache
+variable "vpc_id" {
+  description = "VPC ID for ElastiCache"
+  type        = string
+}
+
+variable "vpc_cidr_block" {
+  description = "VPC CIDR block for ElastiCache security group"
+  type        = string
+}
+
+variable "private_subnet_ids" {
+  description = "Private subnet IDs for ElastiCache"
+  type        = list(string)
+}
+
+variable "elasticache_replication_group_id" {
+  description = "ElastiCache replication group identifier"
+  type        = string
+}
+

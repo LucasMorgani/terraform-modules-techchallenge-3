@@ -7,11 +7,10 @@ locals {
 
 module "this" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "6.6.0"
+  version = "5.8.0"
 
   name = var.project_name
   cidr = var.cidr_block
-  region = var.aws_region
   azs = local.azs
 
   tags = var.tags
@@ -21,7 +20,6 @@ module "this" {
 
   create_multiple_public_route_tables  = true
   enable_nat_gateway = true
-  create_private_nat_gateway_route = true
   single_nat_gateway = true
   manage_default_route_table = false
 

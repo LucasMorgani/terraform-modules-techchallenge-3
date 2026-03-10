@@ -26,6 +26,10 @@ module "vpc" {
   enable_ipv6           = var.enable_ipv6
 }
 
+module "ecr" {
+  source = "./modules/ecr"
+}
+
 module "rds" {
   source = "./modules/databases"
   project_name = var.project_name
@@ -70,6 +74,17 @@ module "rds" {
   # Parâmetros e options
   rds_parameters                           = var.rds_parameters
   rds_options                              = var.rds_options
+  
+  # Variáveis ElastiCache
+  elasticache_cluster_id                   = var.elasticache_cluster_id
+  elasticache_replication_group_id          = var.elasticache_replication_group_id
+  create_elasticache                      = var.create_elasticache
+  create_elasticache_replication_group     = var.create_elasticache_replication_group
+  
+  # VPC information for ElastiCache
+  vpc_id              = module.vpc.vpc_id
+  vpc_cidr_block      = module.vpc.vpc_cidr_block
+  private_subnet_ids   = module.vpc.private_subnets
 }
 
 module "eks" {
@@ -86,4 +101,12 @@ module "eks" {
   eks_kubernetes_version        = var.eks_kubernetes_version
   eks_managed_node_groups       = var.eks_managed_node_groups
   eks_access_entries           = var.eks_access_entries
+  
+  # VPC information for EKS
+  vpc_id              = module.vpc.vpc_id
+  private_subnet_ids   = module.vpc.private_subnets
+  vpc_cidr_block      = module.vpc.vpc_cidr_block
+  
+  # Disable IAM session context for AWS Academy
+  enable_iam_session_context = var.enable_iam_session_context
 }

@@ -41,6 +41,18 @@ variable "tags" {
   }
 }
 
+variable "rds_tags" {
+  type        = map(any)
+  description = "Tags for RDS resources"
+  default     = {}
+}
+
+variable "repository_name" {
+  type        = string
+  description = "ECR repository name"
+  default     = "togglemaster"
+}
+
 # =============================================================================
 # VARIÁVEIS DO MÓDULO NETWORK (VPC)
 # =============================================================================
@@ -307,6 +319,39 @@ variable "dynamodb_tables" {
     tags = map(string)
   }))
   default = []
+}
+
+# =============================================================================
+# VARIÁVEIS DO MÓDULO DATABASES (ELASTICACHE)
+# =============================================================================
+variable "elasticache_cluster_id" {
+  description = "ElastiCache cluster identifier"
+  type        = string
+  default     = ""
+}
+
+variable "elasticache_replication_group_id" {
+  description = "ElastiCache replication group identifier"
+  type        = string
+  default     = ""
+}
+
+variable "create_elasticache" {
+  description = "Create ElastiCache cluster"
+  type        = bool
+  default     = false
+}
+
+variable "create_elasticache_replication_group" {
+  description = "Create ElastiCache replication group"
+  type        = bool
+  default     = false
+}
+
+variable "enable_iam_session_context" {
+  description = "Enable IAM session context check (disable for AWS Academy environments)"
+  type        = bool
+  default     = false
 }
 
 # =============================================================================
