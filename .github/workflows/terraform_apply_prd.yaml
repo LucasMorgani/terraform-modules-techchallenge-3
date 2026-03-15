@@ -1,7 +1,8 @@
 name: Terraform Apply Production
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [ main ]
 
 env:
   AWS_REGION_PRD: us-east-1
