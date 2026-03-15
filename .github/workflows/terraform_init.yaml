@@ -72,10 +72,10 @@ jobs:
         working-directory: ${{ env.WORK_DIR_HML }}
         run: terraform plan -out=tfplan
 
-      - name: Output
-        working-directory: ${{ env.WORK_DIR_HML }}
-        run: |
-          echo "## Infrastructure Deployed" >> $GITHUB_STEP_SUMMARY
-          echo '---' >> $GITHUB_STEP_SUMMARY
-          terraform output >> $GITHUB_STEP_SUMMARY
-          echo '---' >> $GITHUB_STEP_SUMMARY
+      #- name: Output
+      #  working-directory: ${{ env.WORK_DIR_HML }}
+      #  run: |
+      #    echo "## Infrastructure Deployed" >> $GITHUB_STEP_SUMMARY
+      #    echo '---' >> $GITHUB_STEP_SUMMARY
+      #    terraform output >> $GITHUB_STEP_SUMMARY
+      #    echo '---' >> $GITHUB_STEP_SUMMARY
