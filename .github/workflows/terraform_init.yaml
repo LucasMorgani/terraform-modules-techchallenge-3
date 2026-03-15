@@ -71,7 +71,6 @@ jobs:
       
       - name: Plan
         working-directory: ${{ env.WORK_DIR_HML }}
-        run: terraform plan -out=tfplan
         run: |
           set -x
           terraform plan -no-color -out=tfplan
