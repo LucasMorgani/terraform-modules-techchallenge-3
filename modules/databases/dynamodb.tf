@@ -4,7 +4,7 @@ module "dynamodb_table" {
   version  = "4.1.0"
 
   name     = "ToggleMasterAnalytics"
-  hash_key = "id"
+  hash_key = "event_id"
 
   attributes = [
     {
