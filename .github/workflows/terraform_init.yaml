@@ -74,11 +74,3 @@ jobs:
         run: |
           set -x
           terraform plan -no-color -out=tfplan
-
-      #- name: Output
-      #  working-directory: ${{ env.WORK_DIR_HML }}
-      #  run: |
-      #    echo "## Infrastructure Deployed" >> $GITHUB_STEP_SUMMARY
-      #    echo '---' >> $GITHUB_STEP_SUMMARY
-      #    terraform output >> $GITHUB_STEP_SUMMARY
-      #    echo '---' >> $GITHUB_STEP_SUMMARY
