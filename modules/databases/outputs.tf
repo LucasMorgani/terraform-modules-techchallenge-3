@@ -7,3 +7,9 @@ output "rds_instance_id" {
   description = "RDS instance ID"
   value = module.db.db_instance_resource_id
 }
+
+output "dynamodb_table_name" {
+  description = "DynamoDB table name"
+  value = module.dynamodb_table.dynamodb_table_name
+}
+

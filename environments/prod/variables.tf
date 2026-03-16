@@ -321,6 +321,11 @@ variable "dynamodb_tables" {
   default = []
 }
 
+variable "dynamodb_table_name" {
+  description = "DynamoDB table name"
+  type        = string
+}
+
 # =============================================================================
 # VARIÁVEIS DO MÓDULO DATABASES (ELASTICACHE)
 # =============================================================================

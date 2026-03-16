@@ -62,7 +62,7 @@ module "rds" {
 
   # Configurações de subnet
   rds_create_db_subnet_group = var.rds_create_db_subnet_group
-  rds_subnet_ids             = [] # Será preenchido após criação da VPC
+  rds_subnet_ids             = module.vpc.private_subnets
 
   # Configurações de engine
   rds_family               = var.rds_family
