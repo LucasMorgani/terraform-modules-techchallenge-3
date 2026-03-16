@@ -14,7 +14,7 @@ env:
 
 jobs:
   Terraform-Apply-HML:
-    name: Terraform-Apply
+    name: Terraform-Apply-HML
     runs-on: ubuntu-latest
     environment: hml
 

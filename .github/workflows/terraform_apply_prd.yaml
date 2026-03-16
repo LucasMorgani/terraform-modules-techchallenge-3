@@ -1,11 +1,11 @@
 name: Terraform Apply Production
 
-#on:
-#  push:
-#    branches: [ feature/helm_provider ]
-
 on:
-  workflow_dispatch:
+  push:
+    branches: [ feature/helm_provider ]
+
+#on:
+#  workflow_dispatch:
 
 env:
   AWS_REGION_PRD: us-east-1
@@ -14,7 +14,7 @@ env:
 
 jobs:
   Terraform-Apply-PRD:
-    name: Terraform-Apply
+    name: Terraform-Apply-PRD
     runs-on: ubuntu-latest
     environment: prod
 
