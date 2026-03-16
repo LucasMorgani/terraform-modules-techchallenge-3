@@ -30,14 +30,6 @@ module "elasticache" {
   subnet_ids = var.private_subnet_ids
 
   # Parameter Group
-  create_parameter_group = true
-  parameter_group_name = "${var.elasticache_cluster_id}-param-group"
-  parameter_group_family = var.elasticache_parameter_group_family
-  parameters = [
-    {
-      name  = "timeout"
-      value = 60
-    }
-  ]
+  create_parameter_group = false
 
 }

@@ -99,29 +99,8 @@ rds_major_engine_version = "15"
 # Proteção contra deleção (permitido apenas via Terraform para Academy)
 rds_deletion_protection = false
 
-# Parâmetros otimizados para Academy (apenas parâmetros dinâmicos)
-rds_parameters = [
-  {
-    name  = "max_connections"
-    value = "100"
-  },
-  {
-    name  = "work_mem"
-    value = "4096"
-  },
-  {
-    name  = "maintenance_work_mem"
-    value = "16384"
-  },
-  {
-    name  = "checkpoint_completion_target"
-    value = "0.7"
-  },
-  {
-    name  = "default_statistics_target"
-    value = "50"
-  }
-]
+# Parâmetros do RDS (desabilitados para evitar erros)
+rds_parameters = []
 
 # Options do PostgreSQL (mínimo para Academy)
 rds_options = []
