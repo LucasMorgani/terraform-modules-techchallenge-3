@@ -16,8 +16,6 @@ module "dynamodb_table" {
   #Additional configurations
   #Point in time recovery enabled
   point_in_time_recovery_enabled = true
-  #Protection against deletion
-  deletion_protection_enabled = true
   #Encryption
   server_side_encryption_enabled = true
 
