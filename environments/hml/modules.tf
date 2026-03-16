@@ -27,7 +27,9 @@ module "vpc" {
 }
 
 module "ecr" {
-  source = "../../modules/ecr"
+  source         = "../../modules/ecr"
+  repository_name = var.repository_name
+  tags           = var.tags
 }
 
 module "rds" {

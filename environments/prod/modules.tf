@@ -27,7 +27,9 @@ module "vpc" {
 }
 
 module "ecr" {
-  source = "../../modules/ecr"
+  source         = "../../modules/ecr"
+  repository_name = var.repository_name
+  tags           = var.tags
 }
 
 module "rds" {
@@ -80,6 +82,9 @@ module "rds" {
   elasticache_replication_group_id          = var.elasticache_replication_group_id
   create_elasticache                      = var.create_elasticache
   create_elasticache_replication_group     = var.create_elasticache_replication_group
+  
+  # Variáveis DynamoDB
+  dynamodb_table_name                      = var.dynamodb_table_name
   
   # VPC information for ElastiCache
   vpc_id              = module.vpc.vpc_id
