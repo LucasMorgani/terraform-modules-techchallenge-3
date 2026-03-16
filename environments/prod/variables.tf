@@ -50,7 +50,7 @@ variable "rds_tags" {
 variable "repository_name" {
   type        = string
   description = "ECR repository name"
-  default     = "togglemaster"
+  default     = "togglemaster_prod"
 }
 
 # =============================================================================
