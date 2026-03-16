@@ -3,7 +3,7 @@
 # =============================================================================
 aws_region   = "us-east-1"
 project_name = "togglemaster_prod"
-cidr_block   = "10.1.0.0/16"
+cidr_block   = "10.0.0.0/16"
 
 # =============================================================================
 # VARIÁVEIS DO MÓDULO NETWORK (VPC)
@@ -11,7 +11,7 @@ cidr_block   = "10.1.0.0/16"
 network_tags = {
   team       = "DevOps"
   project    = "togglemaster"
-  environment = "production"
+  environment = "Production"
   managedBy  = "Terraform"
   Name       = "togglemaster-vpc-prod"
 }
@@ -27,7 +27,7 @@ eks_kubernetes_version = "1.29"
 eks_tags = {
   team       = "Academy"
   project    = "togglemaster"
-  environment = "production"
+  environment = "Production"
   managedBy  = "Terraform"
   Name       = "togglemaster-eks-prod"
 }
@@ -67,7 +67,7 @@ eks_access_entries = {
 # =============================================================================
 rds_identifier = "togglemaster-db-prod"
 rds_engine     = "postgres"
-rds_engine_version = "15.4"
+rds_engine_version = "15"
 rds_instance_class = "db.t3.micro"  # Instância menor para Academy
 rds_allocated_storage = 20
 
@@ -77,7 +77,7 @@ rds_port     = "5432"
 
 # Configurações de segurança para Academy
 rds_iam_database_authentication_enabled = true
-rds_vpc_security_group_ids = []  # Será preenchido automaticamente pelo módulo VPC
+rds_vpc_security_group_ids = []
 
 # Janelas de manutenção (fora do horário de Academy)
 rds_maintenance_window = "Sun:02:00-Sun:04:00"
@@ -90,7 +90,7 @@ rds_create_monitoring_role = false  # Desabilitado para Academy
 
 # Configurações de subnet
 rds_create_db_subnet_group = true
-rds_subnet_ids = []  # Será preenchido automaticamente pelo módulo VPC
+rds_subnet_ids = []
 
 # Configurações de engine PostgreSQL
 rds_family = "postgres15"
@@ -99,37 +99,8 @@ rds_major_engine_version = "15"
 # Proteção contra deleção (permitido apenas via Terraform para Academy)
 rds_deletion_protection = false
 
-# Parâmetros otimizados para Academy
-rds_parameters = [
-  {
-    name  = "max_connections"
-    value = "100"
-  },
-  {
-    name  = "shared_buffers"
-    value = "128MB"
-  },
-  {
-    name  = "work_mem"
-    value = "1MB"
-  },
-  {
-    name  = "maintenance_work_mem"
-    value = "16MB"
-  },
-  {
-    name  = "checkpoint_completion_target"
-    value = "0.7"
-  },
-  {
-    name  = "wal_buffers"
-    value = "4MB"
-  },
-  {
-    name  = "default_statistics_target"
-    value = "50"
-  }
-]
+# Parâmetros do RDS (desabilitados para evitar erros)
+rds_parameters = []
 
 # Options do PostgreSQL (mínimo para Academy)
 rds_options = []
@@ -158,7 +129,7 @@ dynamodb_tables = [
       }
     ]
     tags = {
-      team       = "DevOps"
+      team       = "AcaDevOpsdemy"
       project    = "togglemaster"
       environment = "Production"
       managedBy  = "Terraform"
@@ -176,7 +147,7 @@ dynamodb_tables = [
       }
     ]
     tags = {
-      team       = "AcadDevOpsemy"
+      team       = "DevOps"
       project    = "togglemaster"
       environment = "Production"
       managedBy  = "Terraform"
@@ -196,3 +167,11 @@ global_tags = {
   owner      = "AcademyStudent"
   cost-center = "Education"
 }
+
+# =============================================================================
+# VARIÁVEIS DO MÓDULO DATABASES (ELASTICACHE)
+# =============================================================================
+elasticache_cluster_id = "togglemaster-redis-prod"
+elasticache_replication_group_id = "togglemaster-redis-repl-prod"
+create_elasticache = false
+create_elasticache_replication_group = false

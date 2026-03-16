@@ -46,8 +46,3 @@ jobs:
         run: |
           terraform init -reconfigure
           terraform apply -auto-approve
-
-      - name: Remove
-        working-directory: ${{ env.WORK_DIR_HML }}
-        run: |
-          terraform destroy -auto-approve
