@@ -201,7 +201,7 @@ variable "elasticache_az_mode" {
 variable "elasticache_parameter_group_family" {
   description = "Parameter group family"
   type        = string
-  default     = "redis7.x"
+  default     = "redis7"
 }
 
 variable "create_elasticache" {

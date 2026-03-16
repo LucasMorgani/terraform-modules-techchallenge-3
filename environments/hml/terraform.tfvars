@@ -107,15 +107,15 @@ rds_parameters = [
   },
   {
     name  = "shared_buffers"
-    value = "128MB"
+    value = "128000"
   },
   {
     name  = "work_mem"
-    value = "1024"
+    value = "4096"
   },
   {
     name  = "maintenance_work_mem"
-    value = "16MB"
+    value = "16384"
   },
   {
     name  = "checkpoint_completion_target"
@@ -123,7 +123,7 @@ rds_parameters = [
   },
   {
     name  = "wal_buffers"
-    value = "4MB"
+    value = "4000"
   },
   {
     name  = "default_statistics_target"
