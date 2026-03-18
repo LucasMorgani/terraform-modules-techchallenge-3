@@ -1,7 +1,7 @@
 name: Terraform Init
 
 on:
-  pull_request:
+  push:
     branches: [ feature/helm_provider ]
 
 env:
