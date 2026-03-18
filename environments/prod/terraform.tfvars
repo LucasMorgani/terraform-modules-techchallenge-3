@@ -55,7 +55,7 @@ eks_managed_node_groups = {
 # Configuração de acesso IAM para Academy (LabRole)
 eks_access_entries = {
   academy_labrole = {
-    principal_arn = "arn:aws:iam::471112638215:role/LabRole"  # Substituir ACCOUNT pelo ID da conta
+    principal_arn = "arn:aws:iam::654654467270:role/LabRole"  # Substituir ACCOUNT pelo ID da conta
     policy_associations = {
       cluster_admin = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
     }
