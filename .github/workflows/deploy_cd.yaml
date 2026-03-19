@@ -1,0 +1,130 @@
+name: Deploying ArgoCD + SealedSecrets
+
+on:
+  workflow_call:
+    inputs:
+    environment:
+      required: true
+      type: string
+
+env:
+  AWS_REGION: us-east-1
+  EKS_CLUSTER_NAME_HML: togglemaster-eks-hml
+  EKS_CLUSTER_NAME_PRD: togglemaster-eks-prod
+
+jobs:
+  Deploy-CD-HML:
+    if: ${{ inputs.environment == 'homologation' }} #Homologation environment
+    name: Deploy CD HML
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: latest
+
+      - name: Verify kubectl
+        run: |
+          echo "kubectl version: $(kubectl version --client)"
+
+      - name: Get EKS cluster info
+        run: |
+          aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ env.EKS_CLUSTER_NAME_HML }}
+          echo "current context: $(kubectl config current-context)"
+          echo "current nodes: $(kubectl get nodes)"
+
+      - name: apply ArgoCD
+        run: |
+          kubectl apply --server-side --force-conflicts -k CD/base/
+          kubectl wait --for=condition=Established crd/applications.argoproj.io --timeout=60s
+          kubectl wait --for=condition=Established crd/appprojects.argoproj.io --timeout=60s
+          kubectl wait --for=condition=Established crd/applicationsets.argoproj.io --timeout=60s
+          kubectl apply --server-side --force-conflicts -k CD/apps/
+
+      - name: Verifying ArgoCD
+        run: |
+          echo "ArgoCD version: $(kubectl get deployment argocd-server -n argocd -o jsonpath='{.spec.template.spec.containers[0].image}')"
+
+      - name: Create namespace for Sealed Secrets
+        run: |
+          kubectl create namespace sealed-secrets --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Deploying SealedSecret
+        run: |
+          helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
+          helm install sealed-secrets sealed-secrets/sealed-secrets -n sealed-secrets
+
+      - name: Verifying SealedSecret
+        run: |
+          echo "current sealed-secrets deployment: $(kubectl get deployment sealed-secrets -n sealed-secrets)" \
+          echo "current sealed-secrets secret: $(kubectl get secret -n sealed-secrets)"
+
+  Deploy-CD-PRD:
+    if: ${{ inputs.environment == 'production' }} #Production environment
+    name: Deploy CD PRD
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: latest
+
+      - name: Verify kubectl
+        run: |
+          echo "kubectl version: $(kubectl version --client)"
+
+      - name: Get EKS cluster info
+        run: |
+          aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ env.EKS_CLUSTER_NAME_PRD }}
+          echo "current context: $(kubectl config current-context)"
+          echo "current nodes: $(kubectl get nodes)"
+
+      - name: apply ArgoCD
+        run: |
+          kubectl apply --server-side --force-conflicts -k CD/base/
+          kubectl wait --for=condition=Established crd/applications.argoproj.io --timeout=60s
+          kubectl wait --for=condition=Established crd/appprojects.argoproj.io --timeout=60s
+          kubectl wait --for=condition=Established crd/applicationsets.argoproj.io --timeout=60s
+          kubectl apply --server-side --force-conflicts -k CD/apps/
+
+      - name: Verifying ArgoCD
+        run: |
+          echo "ArgoCD version: $(kubectl get deployment argocd-server -n argocd -o jsonpath='{.spec.template.spec.containers[0].image}')"
+
+      - name: Create namespace for Sealed Secrets
+        run: |
+          kubectl create namespace sealed-secrets --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Deploying SealedSecret
+        run: |
+          helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
+          helm install sealed-secrets sealed-secrets/sealed-secrets -n sealed-secrets
+
+      - name: Verifying SealedSecret
+        run: |
+          echo "current sealed-secrets deployment: $(kubectl get deployment sealed-secrets -n sealed-secrets)" \
+          echo "current sealed-secrets secret: $(kubectl get secret -n sealed-secrets)"

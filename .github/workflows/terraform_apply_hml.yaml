@@ -2,7 +2,7 @@ name: Terraform Apply Homolog
 
 on:
   push:
-    branches: [ main ]
+    branches: [ feature/helm_provider ]
 
 #on:
 #  workflow_dispatch:
@@ -49,4 +49,9 @@ jobs:
         run: |
           terraform init -reconfigure
           terraform apply -auto-approve
-#teste
+          
+  deploy-ArgoCD-HML:
+    uses: ./.github/workflows/deploy_cd.yaml
+    with:
+      environment: homologation
+    secrets: inherit
