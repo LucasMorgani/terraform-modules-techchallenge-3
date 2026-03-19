@@ -72,3 +72,4 @@ jobs:
         run: |
           set -x
           terraform plan -no-color -out=tfplan
+#teste
