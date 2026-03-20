@@ -7,7 +7,7 @@ spec:
   project: argocd
   source:
     repoURL: https://github.com/toni182/TechChallenge3
-    targetRevision: teste
+    targetRevision: feature/sealed_secret
     path: Helm/togglemaster
     helm:
       valueFiles:
