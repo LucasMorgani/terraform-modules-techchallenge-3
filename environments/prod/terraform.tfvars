@@ -199,11 +199,6 @@ tags = {
 repository_name = ["analytics-service", "auth-service", "evaluation-service", "flag-service", "targeting-service"]
 
 # =============================================================================
-# VARIÁVEL FALTANTE (RDS PASSWORD)
-# =============================================================================
-rds_password = "SenhaSegura123!"  # Substituir por senha segura real
-
-# =============================================================================
 # VARIÁVEIS DO MÓDULO DATABASES (ELASTICACHE)
 # =============================================================================
 elasticache_cluster_id = "togglemaster-redis-prod"
