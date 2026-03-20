@@ -3,8 +3,8 @@ module "dynamodb_table" {
   source   = "terraform-aws-modules/dynamodb-table/aws"
   version  = "4.1.0"
 
-  name     = "ToggleMasterAnalytics"
-  hash_key = "id"
+  name     = var.dynamodb_table_name
+  hash_key = "event_id"
 
   attributes = [
     {
@@ -16,8 +16,6 @@ module "dynamodb_table" {
   #Additional configurations
   #Point in time recovery enabled
   point_in_time_recovery_enabled = true
-  #Protection against deletion
-  deletion_protection_enabled = true
   #Encryption
   server_side_encryption_enabled = true
 

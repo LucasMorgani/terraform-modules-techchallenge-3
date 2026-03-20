@@ -6,7 +6,7 @@ locals {
 }
 
 module "vpc" {
-  source = "./modules/network"
+  source = "../../modules/network"
 
   aws_region   = var.aws_region
   project_name = var.project_name
@@ -27,11 +27,14 @@ module "vpc" {
 }
 
 module "ecr" {
-  source = "./modules/ecr"
+  source         = "../../modules/ecr"
+  repository_name = var.repository_name
+  tags           = var.tags
+  aws_account_id = var.aws_account_id
 }
 
 module "rds" {
-  source       = "./modules/databases"
+  source       = "../../modules/databases"
   project_name = var.project_name
   aws_region   = var.aws_region
   tags         = var.tags
@@ -62,7 +65,7 @@ module "rds" {
 
   # Configurações de subnet
   rds_create_db_subnet_group = var.rds_create_db_subnet_group
-  rds_subnet_ids             = [] # Será preenchido após criação da VPC
+  rds_subnet_ids             = module.vpc.private_subnets
 
   # Configurações de engine
   rds_family               = var.rds_family
@@ -81,6 +84,9 @@ module "rds" {
   create_elasticache                      = var.create_elasticache
   create_elasticache_replication_group     = var.create_elasticache_replication_group
   
+  # Variáveis DynamoDB
+  dynamodb_table_name                      = var.dynamodb_table_name
+  
   # VPC information for ElastiCache
   vpc_id              = module.vpc.vpc_id
   vpc_cidr_block      = module.vpc.vpc_cidr_block
@@ -88,19 +94,21 @@ module "rds" {
 }
 
 module "eks" {
-  source = "./modules/eks-cluster"
+  source = "../../modules/eks-cluster"
 
   # Variáveis principais
   aws_region   = var.aws_region
   project_name = var.project_name
   cidr_block   = var.cidr_block
   tags         = var.eks_tags
+  aws_account_id = var.aws_account_id
 
   # Variáveis EKS
   eks_cluster_name              = var.eks_cluster_name
   eks_kubernetes_version        = var.eks_kubernetes_version
   eks_managed_node_groups       = var.eks_managed_node_groups
   eks_access_entries           = var.eks_access_entries
+  eks_enable_irsa             = var.eks_enable_irsa
   
   # VPC information for EKS
   vpc_id              = module.vpc.vpc_id

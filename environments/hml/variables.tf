@@ -50,7 +50,13 @@ variable "rds_tags" {
 variable "repository_name" {
   type        = string
   description = "ECR repository name"
-  default     = "togglemaster"
+  default     = "togglemaster_hml"
+}
+
+variable "aws_account_id" {
+  type        = string
+  description = "AWS account ID"
+  default     = "654654467270"
 }
 
 # =============================================================================
@@ -153,6 +159,12 @@ variable "eks_access_entries" {
   description = "Map of IAM principals to grant EKS access"
   type        = any
   default     = {}
+}
+
+variable "eks_enable_irsa" {
+  description = "Enable IAM Roles for Service Accounts (IRSA)"
+  type        = bool
+  default     = true
 }
 
 # =============================================================================
@@ -319,6 +331,11 @@ variable "dynamodb_tables" {
     tags = map(string)
   }))
   default = []
+}
+
+variable "dynamodb_table_name" {
+  description = "DynamoDB table name"
+  type        = string
 }
 
 # =============================================================================

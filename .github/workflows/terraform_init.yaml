@@ -1,0 +1,74 @@
+name: Terraform Init
+
+on:
+  push:
+    branches: [ feature/helm_provider ]
+
+env:
+  AWS_REGION_HML: us-east-1
+  TF_VERSION: 1.6.1
+  WORK_DIR_HML: environments/hml/
+  BUCKET_NAME: terraform-state-techchallenge-equipe7-teste
+
+jobs:
+  Terraform-Init:
+    name: Terraform-Init
+    runs-on: ubuntu-latest
+    environment: hml
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+          terraform_wrapper: false
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ env.AWS_REGION_HML }}
+
+      - name: Bootstrap backend if needed
+        run: |
+          set -euo pipefail
+
+          echo "BUCKET_NAME: $BUCKET_NAME"
+          echo "AWS_REGION: $AWS_REGION"
+
+          if aws s3api head-bucket --bucket "$BUCKET_NAME" 2>/dev/null; then
+            echo "Bucket existente. Pulando bootstrap."
+          else
+            echo "Bucket não existe. Criando backend..."
+            cd bootstrap
+            terraform init
+            terraform apply -auto-approve
+            cd ..
+          fi
+
+      - name: Init
+        working-directory: ${{ env.WORK_DIR_HML }}
+        run: terraform init -reconfigure
+
+      - name: Validate
+        working-directory: ${{ env.WORK_DIR_HML }}
+        run: terraform validate
+
+      - name: Changing vars
+        working-directory: ${{ env.WORK_DIR_HML }}
+        run: |
+          echo "" >> terraform.tfvars
+          cat <<EOF >> terraform.tfvars
+          rds_password  = "${{ secrets.RDS_PASSWORD }}"
+          EOF
+      
+      - name: Plan
+        working-directory: ${{ env.WORK_DIR_HML }}
+        run: |
+          set -x
+          terraform plan -no-color -out=tfplan

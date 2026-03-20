@@ -8,7 +8,13 @@ module "ecr" {
 
   repository_name = var.repository_name
 
-  repository_read_write_access_arns = ["arn:aws:iam::012345678901:role/terraform"] # Trocar pelo LabRole
+  #Force deletion of repository containing images
+  repository_force_delete = true
+
+  # Make repository mutable (allow overwriting tags)
+  repository_image_tag_mutability = "MUTABLE"
+
+  repository_read_write_access_arns = ["arn:aws:iam::${var.aws_account_id}:role/LabRole"] # LabRole para Academy
   repository_lifecycle_policy = jsonencode({
     rules = [
       {

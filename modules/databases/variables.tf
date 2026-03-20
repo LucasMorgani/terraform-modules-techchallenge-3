@@ -201,7 +201,7 @@ variable "elasticache_az_mode" {
 variable "elasticache_parameter_group_family" {
   description = "Parameter group family"
   type        = string
-  default     = "redis7.x"
+  default     = "redis7"
 }
 
 variable "create_elasticache" {
@@ -234,6 +234,11 @@ variable "private_subnet_ids" {
 
 variable "elasticache_replication_group_id" {
   description = "ElastiCache replication group identifier"
+  type        = string
+}
+
+variable "dynamodb_table_name" {
+  description = "DynamoDB table name"
   type        = string
 }
 

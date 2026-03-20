@@ -83,7 +83,7 @@ variable "eks_availability_zones" {
 variable "eks_cluster_endpoint_public_access" {
   description = "Enable public access to EKS cluster endpoint"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "eks_cluster_endpoint_private_access" {
@@ -108,4 +108,9 @@ variable "enable_iam_session_context" {
   description = "Enable IAM session context check (disable for AWS Academy environments)"
   type        = bool
   default     = false
+}
+
+variable "aws_account_id" {
+  description = "AWS account ID"
+  type        = string
 }

@@ -1,0 +1,57 @@
+name: Terraform Apply Production
+
+#on:
+#  workflow_dispatch:
+
+on:
+  push:
+    branches: [ feature/helm_provider ]
+
+env:
+  AWS_REGION_PRD: us-east-1
+  TF_VERSION: 1.6.1
+  WORK_DIR_PRD: environments/prod/
+
+jobs:
+  Terraform-Apply-PRD:
+    name: Terraform-Apply-PRD
+    runs-on: ubuntu-latest
+    environment: prod
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+          terraform_wrapper: false
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ env.AWS_REGION_PRD }}
+
+      - name: Changing vars
+        working-directory: ${{ env.WORK_DIR_PRD }}
+        run: |
+          echo "" >> terraform.tfvars
+          cat <<EOF >> terraform.tfvars
+          rds_password  = "${{ secrets.RDS_PASSWORD }}"
+          EOF
+
+      - name: Apply
+        working-directory: ${{ env.WORK_DIR_PRD }}
+        run: |
+          terraform init -reconfigure
+          terraform apply -auto-approve
+  deploy-ArgoCD-PRD:
+    needs: Terraform-Apply-PRD
+    uses: ./.github/workflows/deploy_cd.yaml
+    with:
+      environment: production
+    secrets: inherit
