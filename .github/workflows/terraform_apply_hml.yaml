@@ -51,6 +51,7 @@ jobs:
           terraform apply -auto-approve
           
   deploy-ArgoCD-HML:
+    needs: Terraform-Apply-HML
     uses: ./.github/workflows/deploy_cd.yaml
     with:
       environment: homologation

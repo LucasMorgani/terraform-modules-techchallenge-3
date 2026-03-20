@@ -1,11 +1,11 @@
 name: Terraform Apply Production
 
-#on:
-#  workflow_dispatch:
-
 on:
-  push:
-    branches: [ feature/helm_provider ]
+  workflow_dispatch:
+
+#on:
+#  push:
+#    branches: [ feature/helm_provider ]
 
 env:
   AWS_REGION_PRD: us-east-1
@@ -50,6 +50,7 @@ jobs:
           terraform init -reconfigure
           terraform apply -auto-approve
   deploy-ArgoCD-PRD:
+    needs: Terraform-Apply-PRD
     uses: ./.github/workflows/deploy_cd.yaml
     with:
       environment: production
