@@ -196,7 +196,7 @@ tags = {
 # =============================================================================
 # VARIÁVEIS DO MÓDULO ECR
 # =============================================================================
-repository_name = "togglemaster-prod"
+repository_name = ["auth-service", "flag-service", "targeting-service", "evaluation-service", "analytics-service"]
 
 # =============================================================================
 # VARIÁVEIS DO MÓDULO DATABASES (ELASTICACHE)

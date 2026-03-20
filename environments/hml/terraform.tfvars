@@ -2,7 +2,7 @@
 # VARIÁVEIS GLOBAIS DO PROJETO
 # =============================================================================
 aws_region   = "us-east-1"
-project_name = "togglemaster_hml"
+project_name = "togglemaster"
 cidr_block   = "10.0.0.0/16"
 aws_account_id = "654654467270"  # Substituir pelo ID da conta real
 
@@ -14,38 +14,49 @@ network_tags = {
   project    = "togglemaster"
   environment = "Homolog"
   managedBy  = "Terraform"
-  Name       = "togglemaster-vpc-hml"
+  Name       = "togglemaster-vpc"
 }
 
-network_cluster_name = "togglemaster-eks-hml"
+network_cluster_name = "togglemaster-eks"
+
+# Variáveis de otimização de custos e configuração
+availability_zones        = ["us-east-1a", "us-east-1b", "us-east-1c"]
+enable_nat_gateway       = true
+single_nat_gateway       = true
+one_nat_gateway_per_az   = false
+enable_flow_log         = true
+enable_dns_hostnames    = true
+enable_dns_support      = true
+assign_ipv6_address     = false
+enable_ipv6            = false
 
 # =============================================================================
 # VARIÁVEIS DO MÓDULO EKS-CLUSTER
 # =============================================================================
 eks_cluster_name = "togglemaster-eks-hml"
-eks_kubernetes_version = "1.29"
+eks_kubernetes_version = "1.32"
 
 eks_tags = {
-  team       = "Academy"
+  team       = "DevOps"
   project    = "togglemaster"
-  environment = "homolog"
+  environment = "Homolog"
   managedBy  = "Terraform"
   Name       = "togglemaster-eks-hml"
 }
 
-# Configuração dos Node Groups para Academy (otimizado para LabRole)
+eks_enable_irsa = false
+
 eks_managed_node_groups = {
-  academy_nodes = {
-    instance_types = ["t3.medium"]  # Instância compatível com LabRole
+  hml_nodes = {
+    instance_types = ["t3.medium"]
     min_size       = 1
-    max_size       = 3
-    desired_size   = 2
-    capacity_type  = "ONDEMAND"
-    ami_type       = "AL2_x86_64"
+    max_size       = 1
+    desired_size   = 1
+    capacity_type  = "ON_DEMAND"
+    ami_type       = "AL2023_x86_64_STANDARD"
     
-    # Configurações específicas para Academy
     k8s_labels = {
-      environment = "Homolog"
+      environment = "homolog"
       node-type  = "general"
     }
     
@@ -53,10 +64,9 @@ eks_managed_node_groups = {
   }
 }
 
-# Configuração de acesso IAM para Academy (LabRole)
 eks_access_entries = {
-  academy_labrole = {
-    principal_arn = "arn:aws:iam::654654467270:role/LabRole"  # Substituir ACCOUNT pelo ID da conta
+  hml_admin = {
+    principal_arn = "arn:aws:iam::654654467270:role/LabRole"
     policy_associations = {
       cluster_admin = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
     }
@@ -72,8 +82,8 @@ rds_engine_version = "15"
 rds_instance_class = "db.t3.micro"  # Instância menor para Academy
 rds_allocated_storage = 20
 
-rds_db_name  = "techchallenge_hml"
-rds_username = "academy_admin"
+rds_db_name  = "togglemaster_hml"
+rds_username = "togglemaster_admin"
 rds_port     = "5432"
 
 # Configurações de segurança para Academy
@@ -84,10 +94,9 @@ rds_vpc_security_group_ids = []
 rds_maintenance_window = "Sun:02:00-Sun:04:00"
 rds_backup_window      = "04:00-06:00"
 
-# Configurações de monitoring para Academy
-rds_monitoring_interval    = "0"  # Desabilitado para economizar custos
-rds_monitoring_role_name   = "TechChallengeAcademyRDSMonitoringRole"
-rds_create_monitoring_role = false  # Desabilitado para Academy
+# Configurações de monitoring para Homolog
+rds_monitoring_interval    = "0"
+rds_create_monitoring_role = false
 
 # Configurações de subnet
 rds_create_db_subnet_group = true
@@ -97,11 +106,20 @@ rds_subnet_ids = []
 rds_family = "postgres15"
 rds_major_engine_version = "15"
 
-# Proteção contra deleção (permitido apenas via Terraform para Academy)
+# Proteção contra deleção
 rds_deletion_protection = false
 
-# Parâmetros do RDS (desabilitados para evitar erros)
-rds_parameters = []
+# Parâmetros otimizados para Homolog
+rds_parameters = [
+  {
+    name  = "checkpoint_completion_target"
+    value = "0.9"
+  },
+  {
+    name  = "default_statistics_target"
+    value = "100"
+  }
+]
 
 # Options do PostgreSQL (mínimo para Academy)
 rds_options = []
@@ -130,7 +148,7 @@ dynamodb_tables = [
       }
     ]
     tags = {
-      team       = "AcaDevOpsdemy"
+      team       = "DevOps"
       project    = "togglemaster"
       environment = "Homolog"
       managedBy  = "Terraform"
@@ -171,6 +189,18 @@ global_tags = {
   cost-center = "Education"
 }
 
+tags = {
+  team       = "DevOps"
+  project    = "togglemaster"
+  environment = "Homolog"
+  managedBy  = "Terraform"
+}
+
+# =============================================================================
+# VARIÁVEIS DO MÓDULO ECR
+# =============================================================================
+repository_name = ["auth-service", "flag-service", "targeting-service", "evaluation-service", "analytics-service"]
+
 # =============================================================================
 # VARIÁVEIS DO MÓDULO DATABASES (ELASTICACHE)
 # =============================================================================
@@ -178,3 +208,8 @@ elasticache_cluster_id = "togglemaster-redis-hml"
 elasticache_replication_group_id = "togglemaster-redis-repl-hml"
 create_elasticache = false
 create_elasticache_replication_group = false
+
+# =============================================================================
+# VARIÁVEIS DO MÓDULO EKS (AWS ACADEMY)
+# =============================================================================
+enable_iam_session_context = false  # Desabilitar para AWS Academy
