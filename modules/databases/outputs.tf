@@ -15,5 +15,6 @@ output "dynamodb_table_name" {
 
 output "rds_password" {
   description = "RDS password"
-  value = module.db.password
+  value       = var.rds_password
+  sensitive   = true
 }
