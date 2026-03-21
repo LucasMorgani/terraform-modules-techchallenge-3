@@ -45,7 +45,7 @@ jobs:
           echo "current context: $(kubectl config current-context)"
           echo "current nodes: $(kubectl get nodes)"
 
-      - creating namespaces:
+      - name: Creating namespaces
         run: |
           kubectl create namespace auth-service --dry-run=client -o yaml | kubectl apply -f -
           kubectl create namespace flag-service --dry-run=client -o yaml | kubectl apply -f -
