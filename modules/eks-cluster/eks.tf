@@ -106,9 +106,9 @@ resource "aws_eks_node_group" "managed" {
   }
 
   scaling_config {
-    desired_size = try(each.value.desired_size, 1)
-    max_size     = try(each.value.max_size, 1)
-    min_size     = try(each.value.min_size, 1)
+    desired_size = try(each.value.desired_size, 2)
+    max_size     = try(each.value.max_size, 3)
+    min_size     = try(each.value.min_size, 2)
   }
 
   launch_template {
