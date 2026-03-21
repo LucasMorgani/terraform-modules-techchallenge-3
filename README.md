@@ -2,6 +2,7 @@
 
 Este projeto contém uma infraestrutura completa na AWS provisionada com Terraform, utilizando uma arquitetura modular para provisionar VPC, cluster EKS e banco de dados RDS.
 
+
 ## 📁 Estrutura do Projeto
 
 ```
