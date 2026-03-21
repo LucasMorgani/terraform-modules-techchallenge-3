@@ -5,8 +5,9 @@
 module "ecr" {
   source = "terraform-aws-modules/ecr/aws"
   version = "2.1.0"
+  for_each = toset(var.repository_name)
 
-  repository_name = var.repository_name
+  repository_name = each.key
 
   #Force deletion of repository containing images
   repository_force_delete = true
@@ -33,7 +34,5 @@ module "ecr" {
     ]
   })
 
-#   tags = {
-#     locals.tags
-#   }
+  tags = var.tags
 }

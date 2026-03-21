@@ -48,9 +48,9 @@ variable "rds_tags" {
 }
 
 variable "repository_name" {
-  type        = string
-  description = "ECR repository name"
-  default     = "togglemaster_hml"
+  type        = list(string)
+  description = "ECR repository names"
+  default     = ["togglemaster_hml"]
 }
 
 variable "aws_account_id" {
