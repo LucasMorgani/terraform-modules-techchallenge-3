@@ -5,7 +5,7 @@ name: Terraform Apply Production
 
 on:
   push:
-    branches: [ feature/helm_provider ]
+    branches: [ main ]
 
 env:
   AWS_REGION_PRD: us-east-1

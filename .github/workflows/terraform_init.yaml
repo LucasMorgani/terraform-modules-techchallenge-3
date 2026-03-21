@@ -2,7 +2,7 @@ name: Terraform Init
 
 on:
   push:
-    branches: [ feature/helm_provider ]
+    branches: [ main ]
 
 env:
   AWS_REGION_HML: us-east-1
