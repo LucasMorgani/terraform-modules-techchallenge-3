@@ -28,7 +28,7 @@ module "vpc" {
 
 module "ecr" {
   source         = "../../modules/ecr"
-  repository_name = each.key.repository_name
+  repository_name = each.key
   tags           = var.tags
   aws_account_id = var.aws_account_id
 }
