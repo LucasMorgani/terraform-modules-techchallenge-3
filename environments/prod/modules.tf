@@ -93,6 +93,9 @@ module "rds" {
   vpc_id              = module.vpc.vpc_id
   vpc_cidr_block      = module.vpc.vpc_cidr_block
   private_subnet_ids   = module.vpc.private_subnets
+  
+  # VPC and EKS information for RDS security group
+  eks_cluster_security_group_id = module.eks.eks_cluster_security_group_id
 }
 
 module "eks" {

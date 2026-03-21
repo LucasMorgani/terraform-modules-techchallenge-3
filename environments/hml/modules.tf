@@ -91,6 +91,9 @@ module "rds" {
   vpc_cidr_block      = module.vpc.vpc_cidr_block
   private_subnet_ids   = module.vpc.private_subnets
   dynamodb_table_name = var.dynamodb_table_name
+  
+  # VPC and EKS information for RDS security group
+  eks_cluster_security_group_id = module.eks.eks_cluster_security_group_id
 }
 
 module "eks" {
