@@ -3,19 +3,17 @@
 # }
 
 module "ecr" {
-  source = "terraform-aws-modules/ecr/aws"
+  source  = "terraform-aws-modules/ecr/aws"
   version = "2.1.0"
+
   for_each = toset(var.repository_name)
 
   repository_name = each.key
 
-  #Force deletion of repository containing images
-  repository_force_delete = true
+  repository_force_delete            = true
+  repository_image_tag_mutability    = "MUTABLE"
+  repository_read_write_access_arns  = ["arn:aws:iam::${var.aws_account_id}:role/LabRole"]
 
-  # Make repository mutable (allow overwriting tags)
-  repository_image_tag_mutability = "MUTABLE"
-
-  repository_read_write_access_arns = ["arn:aws:iam::${var.aws_account_id}:role/LabRole"] # LabRole para Academy
   repository_lifecycle_policy = jsonencode({
     rules = [
       {
