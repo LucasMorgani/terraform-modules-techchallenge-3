@@ -66,7 +66,7 @@ eks_managed_node_groups = {
 
 eks_access_entries = {
   prod_admin = {
-    principal_arn = "arn:aws:iam::904368994695:role/voclabs"  # Updated to current account
+    principal_arn = "arn:aws:iam::904368994695:role/LabRole"  # Using LabRole
     policy_associations = {
       cluster_admin = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
     }

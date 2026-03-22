@@ -24,7 +24,7 @@ resource "kubernetes_cluster_role_binding_v1" "namespace_manager_binding" {
 
   subject {
     kind      = "User"
-    name      = "arn:aws:iam::904368994695:role/voclabs"
+    name      = "arn:aws:iam::904368994695:role/LabRole"
     api_group = "rbac.authorization.k8s.io"
   }
 }
