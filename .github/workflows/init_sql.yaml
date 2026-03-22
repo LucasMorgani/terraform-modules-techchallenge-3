@@ -35,20 +35,20 @@ jobs:
 
       - name: Create Makefile
         run: |
-          cat <<'EOF' > Makefile
+          cat > Makefile <<'EOF'
           PSQL = PGPASSWORD=$(POSTGRES_PASSWORD) psql "host=$(POSTGRES_HOST) port=$(POSTGRES_PORT) user=$(POSTGRES_USER) dbname=$(POSTGRES_DB) sslmode=require"
 
           .PHONY: wait-db
           wait-db:
-          	@echo "Waiting for database..."
-          	@until PGPASSWORD=$(POSTGRES_PASSWORD) pg_isready -h $(POSTGRES_HOST) -p $(POSTGRES_PORT) -U $(POSTGRES_USER) -d $(POSTGRES_DB); do
-          		sleep 2;
-          	done
+          \t@echo "Waiting for database..."
+          \t@until PGPASSWORD=$(POSTGRES_PASSWORD) pg_isready -h $(POSTGRES_HOST) -p $(POSTGRES_PORT) -U $(POSTGRES_USER) -d $(POSTGRES_DB); do
+          \t\tsleep 2;
+          \tdone
 
           .PHONY: auth
           auth: wait-db
-          	@echo "Running auth-service init..."
-          	@$(PSQL) <<SQL
+          \t@echo "Running auth-service init..."
+          \t@$(PSQL) <<SQL
           CREATE TABLE IF NOT EXISTS api_keys (
             id SERIAL PRIMARY KEY,
             name VARCHAR(100) NOT NULL,
@@ -60,8 +60,8 @@ jobs:
 
           .PHONY: flag
           flag: wait-db
-          	@echo "Running flag-service init..."
-          	@$(PSQL) <<SQL
+          \t@echo "Running flag-service init..."
+          \t@$(PSQL) <<SQL
           CREATE TABLE IF NOT EXISTS flags (
             id SERIAL PRIMARY KEY,
             name VARCHAR(100) UNIQUE NOT NULL,
@@ -89,8 +89,8 @@ jobs:
 
           .PHONY: targeting
           targeting: wait-db
-          	@echo "Running targeting-service init..."
-          	@$(PSQL) <<SQL
+          \t@echo "Running targeting-service init..."
+          \t@$(PSQL) <<SQL
           CREATE TABLE IF NOT EXISTS targeting_rules (
             id SERIAL PRIMARY KEY,
             flag_name VARCHAR(100) UNIQUE NOT NULL,
@@ -118,11 +118,11 @@ jobs:
 
           .PHONY: all
           all: auth flag targeting
-          	@echo "All migrations executed"
+          \t@echo "All migrations executed"
 
           .PHONY: tables
           tables:
-          	@$(PSQL) -c "\dt"
+          \t@$(PSQL) -c "\dt"
           EOF
 
       - name: Run Auth Database Migration
