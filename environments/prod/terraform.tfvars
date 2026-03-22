@@ -84,7 +84,6 @@ rds_allocated_storage = 20
 
 rds_db_name  = "togglemaster_prod"
 rds_username = "togglemaster_admin"
-rds_password = "testedbteste"
 rds_port     = 5432
 
 rds_iam_database_authentication_enabled = false

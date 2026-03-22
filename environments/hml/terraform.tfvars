@@ -84,7 +84,6 @@ rds_allocated_storage = 20
 
 rds_db_name  = "togglemaster_hml"
 rds_username = "togglemaster_admin"
-rds_password = "testedbteste"
 rds_port     = "5432"
 
 # Configurações de segurança para Academy
