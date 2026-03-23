@@ -1,7 +1,7 @@
 # Outputs das namespaces criadas
 output "namespaces" {
   description = "Lista das namespaces Kubernetes criadas"
-  value       = values(kubernetes_namespace_v1.services)[*].name
+  value       = values(kubernetes_namespace_v1.services)[*].metadata[0].name
 }
 
 # Output individual de cada namespace para referência em outros recursos
