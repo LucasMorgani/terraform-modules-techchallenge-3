@@ -145,7 +145,7 @@ resource "aws_eks_access_policy_association" "this" {
     type = "cluster"
   }
 
-  depends_on = [aws_eks_access_entry.this]
+  # depends_on = [aws_eks_access_entry.this]
 }
 
 data "aws_security_groups" "nodegroup_sg" {
