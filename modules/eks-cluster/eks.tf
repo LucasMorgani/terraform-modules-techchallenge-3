@@ -69,7 +69,7 @@ resource "aws_eks_node_group" "managed" {
   tags = merge(
     var.tags,
     {
-      Name = "${var.project_name}-${each.key}"
+      Name = "${var.project_name}-eks-node-group"
     }
   )
 }
