@@ -114,6 +114,8 @@ module "eks" {
   eks_managed_node_groups       = var.eks_managed_node_groups
   eks_access_entries           = var.eks_access_entries
   eks_enable_irsa             = var.eks_enable_irsa
+  eks_cluster_role_arn        = var.eks_cluster_role_arn
+  eks_node_group_role_arn     = var.eks_node_group_role_arn
   
   # VPC information for EKS
   vpc_id              = module.vpc.vpc_id

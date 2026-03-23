@@ -165,6 +165,18 @@ variable "eks_enable_irsa" {
   default     = true
 }
 
+variable "eks_cluster_role_arn" {
+  description = "IAM role ARN for EKS cluster"
+  type        = string
+  default     = ""
+}
+
+variable "eks_node_group_role_arn" {
+  description = "IAM role ARN for EKS node groups"
+  type        = string
+  default     = ""
+}
+
 # =============================================================================
 # VARIÁVEIS DO MÓDULO DATABASES (RDS)
 # =============================================================================

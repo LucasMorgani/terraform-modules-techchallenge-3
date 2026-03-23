@@ -114,3 +114,15 @@ variable "aws_account_id" {
   description = "AWS account ID"
   type        = string
 }
+
+variable "eks_cluster_role_arn" {
+  description = "IAM role ARN for EKS cluster"
+  type        = string
+  default     = ""
+}
+
+variable "eks_node_group_role_arn" {
+  description = "IAM role ARN for EKS node groups"
+  type        = string
+  default     = ""
+}
