@@ -71,12 +71,6 @@ eks_access_entries = {
       cluster_admin = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
     }
   }
-  voclabs_admin = {
-    principal_arn = "arn:aws:iam::057096910794:role/voclabs"
-    policy_associations = {
-      cluster_admin = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-    }
-  }
 }
 
 # =============================================================================
