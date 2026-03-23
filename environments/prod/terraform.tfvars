@@ -4,7 +4,7 @@
 aws_region   = "us-east-1"
 project_name = "togglemaster"
 cidr_block   = "10.0.0.0/16"
-aws_account_id = "904368994695"  # Updated to current account
+aws_account_id = "654654467270"  # Updated to current account
 
 # =============================================================================
 # VARIÁVEIS DO MÓDULO NETWORK (VPC)
@@ -66,7 +66,7 @@ eks_managed_node_groups = {
 
 eks_access_entries = {
   prod_admin = {
-    principal_arn = "arn:aws:iam::904368994695:role/LabRole"  # Using LabRole
+    principal_arn = "arn:aws:iam::654654467270:role/LabRole"  # Using LabRole
     policy_associations = {
       cluster_admin = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
     }
